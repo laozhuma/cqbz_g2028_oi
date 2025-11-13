@@ -1189,6 +1189,33 @@
           return null;
         }
       });
+      //0721
+      this.register({
+        id: 'onami_at_night',
+        name: '熬夜导管',
+        description: '有学生熬夜导管',
+        check: function(c){
+          const active = perStudentRolls(c.game);
+          this._pendingTriggered = active.filter(() => getRandom() < 0.5);
+          return this._pendingTriggered.length > 0;
+        },
+        run: function(c){
+          const triggered = this._pendingTriggered || [];
+          this._pendingTriggered = null;
+          if (!triggered.length) return null;
+          for (const s of triggered){
+            // 使用 modifier
+            s.pressure_modifier = (s.pressure_modifier || 0) - 10;
+            s.mental = Math.max(0, (s.mental || 100) - 5);
+            try{ if(typeof s.triggerTalents === 'function'){ s.triggerTalents('pressure_change', { source: 'onami_at_night', amount: -10 }); } }catch(e){}
+          }
+          const names = triggered.map(s => s.name).join('、');
+          const msg = `${names} 昨天晚上熬夜到很晚......（压力 -10，心理素质 -5）`;
+          c.log && c.log(`[熬夜导管] ${msg}`);
+          window.pushEvent && window.pushEvent({ name: '熬夜导管', description: msg, week: c.game.week });
+          return null;
+        }
+      });
       
       // 训话事件（含彩蛋图片预加载与调试日志）
       document.addEventListener('coach-speech', (e) => {
