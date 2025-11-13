@@ -740,8 +740,8 @@
               for(const e of rec.entries){
                 if(!e || typeof e.score !== 'number') continue;
                 // NOIP 满分 或 省选 > 500
-                if(rec.name === 'NOIP' && e.score >= noipFull) return true;
-                if(rec.name === '省选' && e.score > 500) return true;
+                if(rec.name === 'NOIP' && e.score >= 280) return true;
+                if(rec.name === '省选' && e.score > 300) return true;
               }
             }
           }catch(err){ console.error('poaching_offer check error', err); }
@@ -761,8 +761,8 @@
               if(!rec.entries) continue;
               for(const e of rec.entries){
                 if(!e || typeof e.score !== 'number') continue;
-                if(rec.name === 'NOIP' && e.score >= noipFull){ targetEntry = e; compName = 'NOIP'; break outer; }
-                if(rec.name === '省选' && e.score > 500){ targetEntry = e; compName = '省选'; break outer; }
+                if(rec.name === 'NOIP' && e.score >= 280){ targetEntry = e; compName = 'NOIP'; break outer; }
+                if(rec.name === '省选' && e.score > 300){ targetEntry = e; compName = '省选'; break outer; }
               }
             }
             if(!targetEntry) return null;
